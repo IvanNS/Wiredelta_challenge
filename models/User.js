@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
+const UserRole = require('./UserRole');
+const Job = require('./Job');
+const Company = require('./Company');
+const Schema = mongoose.Schema;
 
-const userSchema = new mongoose.Schema({
+let userSchema = new Schema({
 	active:{
     type: Boolean,
     default: true
@@ -16,6 +20,10 @@ const userSchema = new mongoose.Schema({
   email:{
     type: String,
     required: true
+  },
+  user_role:{
+    type: Schema.Types.ObjectId,
+    ref: "UserRole"
   },
   password:{
     type: String,
@@ -35,14 +43,18 @@ const userSchema = new mongoose.Schema({
   city:{
     type: String,
   },
-  created_at:{
-    type: Date,
-    default: Date.now()
-  },
-  updated_at:{
-    type: Date,
-    default: Date.now()
-  }
-});
+  jobs:[{
+    type: Schema.Types.ObjectId,
+    ref: 'Job'
+  }],
+  companies:[{
+    type: Schema.Types.ObjectId,
+    ref: 'Company'
+  }],
+  boats:[{
+    type: Schema.Types.ObjectId,
+    ref: 'Boat'
+  }]
+},{timestamps: true });
 
 module.exports = mongoose.model('User',userSchema);
