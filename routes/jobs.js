@@ -1,13 +1,17 @@
 const router = require('express').Router();
 const Job = require('../models/Job');
 const User = require('../models/User');
+const Boat = require('../models/Boat');
 const verify = require('./verifyToken');
 
 //Route for creating a job and assigning it to the creator
-router.post("/:id",verify, function(req, res) {
+router.post("/:userId/:boatId",verify, function(req, res) {
   Job.create(req.body)
     .then(function(dbJob) {
-      return User.findOneAndUpdate({ _id: req.params.id }, {$push: {jobs: dbJob._id}}, { new: true , useFindAndModify:false});
+      return User.findOneAndUpdate({ _id: req.params.userId }, {$push: {jobs: dbJob._id}}, { new: true , useFindAndModify:false});
+    })
+    .then(function(dbJob) {
+      return Boat.findOneAndUpdate({ _id: req.params.boatId }, {$push: {jobs: dbJob._id}}, { new: true , useFindAndModify:false});
     })
     .then(function(dbUser) {
       res.json(dbUser);
