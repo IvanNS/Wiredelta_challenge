@@ -29,7 +29,11 @@ const boatSchema = new Schema({
   },
   city:{
     type: String,
-  }
+  },
+  jobs:[{
+    type: Schema.Types.ObjectId,
+    ref: 'Job'
+  }]
 },{timestamps: true });
 
 module.exports = mongoose.model('Boat',boatSchema);
